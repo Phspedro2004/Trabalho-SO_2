@@ -32,11 +32,13 @@ list.o: list.c list.h
 CPU.o: CPU.c CPU.h
 	$(CC) $(CFLAGS) -c CPU.c
 
-aging_p.o: schedule_aging_p.c timer.o
-	$(CC) $(CFLAGS) -c schedule_aging_p.c timer.o
-
 rr: Driver.o list.o CPU.o schedule_rr.o
 	$(CC) $(CFLAGS) -o rr Driver.o schedule_rr.o list.o CPU.o
 
+aging_p: Driver.o list.o CPU.o schedule_aging_p.o timer.o
+	$(CC) $(CFLAGS) -o aging_p Driver.o schedule_aging_p.o list.o CPU.o timer.o
+
+
+
 timer.o: timer.c timer.h 
-	$(CC) $(CFLAGS) -c timer.c 
+	$(CC) $(CFLAGS) -c timer.c

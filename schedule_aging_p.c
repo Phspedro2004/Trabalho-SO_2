@@ -1,10 +1,9 @@
-///////////////////////////////////////////////
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stddef.h>
 #include <unistd.h>
-#include "schedule_pa.h"
+#include "schedule_aging_p.h"
 #include "list.h"
 #include "CPU.h"
 #include "timer.h"
@@ -101,4 +100,3 @@ void schedule(){
         }
     }
 }
-///////////////////////////////////////////////

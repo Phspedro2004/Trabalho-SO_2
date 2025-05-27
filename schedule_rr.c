@@ -23,7 +23,6 @@ void add(char *name, int burst){
 
 // Chama o escalonador
 void schedule(){
-    timer_start();
     while (taskList != NULL) { // Enquanto a fila não está vazia
         Task *t = taskList->task;
         int slice;
@@ -34,9 +33,6 @@ void schedule(){
         }
         
         run(t, slice);
-        while (!timer_flag_slice()) {
-            // usleep(1);
-        }
         t->burst -= slice;
         delete(&taskList); // Remove a primeira tarefa da fila
         

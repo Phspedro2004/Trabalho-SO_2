@@ -12,10 +12,10 @@
 
 #include "task.h"
 #include "list.h"
-#include "schedule_rr_p.h"
+//#include "schedule_rr_p.h"
 //#include "schedule_rr.h"
 //#include "schedule_edf.h"
-//#include "schedule_aging_p.h"
+#include "schedule_aging_p.h"
 
 #define SIZE 100
 
