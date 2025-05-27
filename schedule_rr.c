@@ -28,7 +28,12 @@ void schedule() {
     while (taskList != NULL) {
         Task *current = taskList->task;
 
-        int fatia = (current->burst > QUANTUM) ? QUANTUM : current->burst;
+        int fatia;
+        if (current->burst > QUANTUM) {
+            fatia = QUANTUM;
+        } else {
+            fatia = current->burst;
+        }
 
         run(current, fatia);
         current->burst -= fatia;
