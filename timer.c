@@ -8,49 +8,51 @@
 #include "timer.h"
 #include "CPU.h"
 
-static int tempo_global = 0;
-static bool flag_slice = false;
-pthread_mutex_t mutex_timer = PTHREAD_MUTEX_INITIALIZER;
+static int tempo_atual = 0;
+static bool flag_tempo = false;
+pthread_mutex_t lock_timer = PTHREAD_MUTEX_INITIALIZER;
 
-// Simular tempo em hardware
-void *th_timer() {
+// Função da thread que simula o temporizador de hardware
+void *temporizador_thread() {
     while (1) {
-        usleep(10000);
-        pthread_mutex_lock(&mutex_timer);
-        tempo_global++;
+        usleep(10000); // cada unidade de tempo simulada
 
-        if (tempo_global % QUANTUM == 0) {
-            flag_slice = true;
+        pthread_mutex_lock(&lock_timer);
+        tempo_atual++;
+
+        if (tempo_atual % QUANTUM == 0) {
+            flag_tempo = true;
         }
-        pthread_mutex_unlock(&mutex_timer);
+        pthread_mutex_unlock(&lock_timer);
 
-        // printf("[timer] time=%d expired=%d\n", tempo_global, flag_slice);
+        // DEBUG opcional:
+        // printf("[timer] tempo=%d flag=%d\n", tempo_atual, flag_tempo);
     }
     return NULL;
 }
 
-// Start
+// Inicia o temporizador (chamado uma única vez no início)
 void timer_start() {
     pthread_t tid;
-    if (pthread_create(&tid, NULL, th_timer, NULL) != 0) {
-        perror("th_timer");
+    if (pthread_create(&tid, NULL, temporizador_thread, NULL) != 0) {
+        perror("Erro ao criar thread do timer");
         exit(1);
     }
 }
 
-// Get time
+// Retorna o tempo atual do sistema
 int timer_get_time() {
-    pthread_mutex_lock(&mutex_timer);
-    int t = tempo_global;
-    pthread_mutex_unlock(&mutex_timer);
+    pthread_mutex_lock(&lock_timer);
+    int t = tempo_atual;
+    pthread_mutex_unlock(&lock_timer);
     return t;
 }
 
-// Atualiza flag
+// Verifica se houve estouro de tempo (slice)
 bool timer_flag_slice() {
-    pthread_mutex_lock(&mutex_timer);
-    bool v = flag_slice;
-    flag_slice = false;
-    pthread_mutex_unlock(&mutex_timer);
-    return v;
+    pthread_mutex_lock(&lock_timer);
+    bool status = flag_tempo;
+    flag_tempo = false;
+    pthread_mutex_unlock(&lock_timer);
+    return status;
 }

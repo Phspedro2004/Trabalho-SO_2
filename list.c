@@ -1,69 +1,67 @@
 /**
- * Various list operations
+ * Funções auxiliares para manipulação de listas encadeadas
  */
- 
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <stddef.h>
+
 #include "list.h"
 #include "task.h"
 
-
-// add a new task to the list of tasks
-void insert(struct node **head, Task *newTask) {
-    // add the new task to the list 
+// Insere uma nova tarefa no final da lista
+void insert(struct node **head, Task *task) {
     struct node *newNode = malloc(sizeof(struct node));
-
-    newNode->task = newTask;
-    newNode->next = NULL;
-    if(*head == NULL){
-        *head = newNode;
-    }
-    else{
-        struct node *nav = *head;
-        while (nav->next != NULL){
-            nav = nav->next;
-        } 
-        nav -> next= newNode;
-    }
-}
-///////////////////////////////////////////////////////////////////////////
-// Adiciona uma nova tarefa na fila ordenada por deadline crescente (EDF)
-void insert_EDF(struct node **head, Task *newTask) {
-    struct node *newNode = malloc(sizeof(struct node));
-    newNode->task = newTask;
+    newNode->task = task;
     newNode->next = NULL;
 
-    if (*head == NULL || newTask->deadline < (*head)->task->deadline) { // Se fila vazia, ou deadline menor que primeira posição
-        newNode->next = *head; 
+    if (*head == NULL) {
         *head = newNode;
     } else {
-        struct node *nav = *head; // Nó auxiliar para navegar pela fila
-        while (nav->next != NULL && nav->next->task->deadline <= newTask->deadline) { // Percorre a fila até a posição correta
+        struct node *nav = *head;
+        while (nav->next != NULL) {
+            nav = nav->next;
+        }
+        nav->next = newNode;
+    }
+}
+
+// Insere uma nova tarefa em ordem crescente de deadline (para EDF)
+void insert_EDF(struct node **head, Task *task) {
+    struct node *newNode = malloc(sizeof(struct node));
+    newNode->task = task;
+    newNode->next = NULL;
+
+    if (*head == NULL || task->deadline < (*head)->task->deadline) {
+        newNode->next = *head;
+        *head = newNode;
+    } else {
+        struct node *nav = *head;
+        while (nav->next != NULL && nav->next->task->deadline <= task->deadline) {
             nav = nav->next;
         }
         newNode->next = nav->next;
-        nav->next = newNode; // Insere newNode na fila
+        nav->next = newNode;
     }
 }
-///////////////////////////////////////////////////////////////////////////
-// Remove o primeiro nó da fila
+
+// Remove a tarefa do início da lista
 void delete(struct node **head) {
-    if (*head == NULL) // Verifica se a fila está vazia
-        return; 
+    if (*head == NULL)
+        return;
+
     struct node *temp = *head;
-    *head = (*head)->next; // Remove o primeiro nó da fila
+    *head = (*head)->next;
     free(temp);
 }
-///////////////////////////////////////////////////////////////////////////
-// traverse the list
+
+// Percorre a lista e imprime cada tarefa
 void traverse(struct node *head) {
-    struct node *temp;
-    temp = head;
+    struct node *temp = head;
 
     while (temp != NULL) {
-        printf("[%s] [%d] [%d]\n",temp->task->name, temp->task->priority, temp->task->burst);
+        printf("[%s] [%d] [%d]\n", temp->task->name, temp->task->priority, temp->task->burst);
         temp = temp->next;
     }
 }
