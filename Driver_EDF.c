@@ -13,9 +13,8 @@
 #include "task.h"
 #include "list.h"
 
-#include "schedule_rr.h"
-#include "schedule_rr_p.h"
-#include "schedule_aging_p.h"
+#include "schedule_edf.h"
+
 
 #define SIZE 100
 
@@ -28,7 +27,8 @@ int main(int argc, char *argv[])
 
     char *name;
     int burst;
-    int priority;
+    int priority; 
+    int deadline; 
 
     in = fopen(argv[1],"r");
     
@@ -36,9 +36,10 @@ int main(int argc, char *argv[])
         temp = strdup(task);
         name = strsep(&temp,",");
         burst = atoi(strsep(&temp,","));
-        priority = atoi(strsep(&temp,","));
+        priority = atoi(strsep(&temp,",")); 
+        deadline = atoi(strsep(&temp, ",")); 
 
-        add(name,priority,burst); 
+        add(name,priority,burst, deadline);
 
         free(temp);
     }

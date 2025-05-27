@@ -11,16 +11,16 @@
 
 struct node *taskList = NULL;
 
-// Cria e insere uma nova tarefa na fila RR
-void add(char *name, int burst) {
-    Task *tarefa = malloc(sizeof(Task));
-    tarefa->name = strdup(name);
-    tarefa->burst = burst;
-    tarefa->priority = 0;     // Ignorado no Round Robin
-    tarefa->deadline = 0;     // Ignorado neste método
-    tarefa->wait_time = 0;    // Não utilizado aqui
+// Insere uma nova tarefa na fila de acordo com a prioridade
+void add(char *name, int priority, int burst) {
+    Task *task = malloc(sizeof(Task));
+    task->name = strdup(name);
+    task->priority = priority;
+    task->burst = burst;
+    task->deadline = 0; // Ignorado no RR_P
+    task->wait_time = 0; // Ignorado neste escalonador
 
-    insert(&taskList, tarefa);
+    insert(&taskList, task);
 }
 
 // Executa o escalonamento Round Robin

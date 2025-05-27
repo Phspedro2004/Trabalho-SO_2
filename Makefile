@@ -14,8 +14,8 @@ clean:
 rr_p: Driver.o list.o CPU.o schedule_rr_p.o
 	$(CC) $(CFLAGS) -o rr_p Driver.o schedule_rr_p.o list.o CPU.o
 
-edf: Driver.o list.o CPU.o schedule_edf.o timer.o
-	$(CC) $(CFLAGS) -o edf Driver.o schedule_edf.o list.o CPU.o timer.o
+edf: Driver_EDF.o list.o CPU.o schedule_edf.o timer.o
+	$(CC) $(CFLAGS) -o edf Driver_EDF.o schedule_edf.o list.o CPU.o timer.o
 
 Driver.o: Driver.c
 	$(CC) $(CFLAGS) -c Driver.c
