@@ -27,8 +27,6 @@ void add(char *name, int priority, int burst) {
 
 // Chama o escalonador
 void schedule() {
-   timer_start();
-   //struct node *nav;
    while (1) {
       int p;
       for (p = MAX_PRIORITY; p <= MIN_PRIORITY; p++) { // Encontra a fila de maior prioridade não vazia
@@ -48,9 +46,6 @@ void schedule() {
          slice = t->burst;
       }
       run(t, slice);
-      while (!timer_flag_slice()) {
-         usleep(10000);
-      }
       t->burst -= slice;
       delete(&taskList[p - 1]); // Remove a primeira tarefa da fila
 

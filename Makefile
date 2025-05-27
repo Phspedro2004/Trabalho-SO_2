@@ -11,8 +11,8 @@ clean:
 	rm -rf rr_p
 	rm -rf edf
 
-rr_p: Driver.o list.o CPU.o schedule_rr_p.o timer.o
-	$(CC) $(CFLAGS) -o rr_p Driver.o schedule_rr_p.o list.o CPU.o timer.o
+rr_p: Driver.o list.o CPU.o schedule_rr_p.o
+	$(CC) $(CFLAGS) -o rr_p Driver.o schedule_rr_p.o list.o CPU.o
 
 edf: Driver.o list.o CPU.o schedule_edf.o timer.o
 	$(CC) $(CFLAGS) -o edf Driver.o schedule_edf.o list.o CPU.o timer.o
@@ -32,11 +32,11 @@ list.o: list.c list.h
 CPU.o: CPU.c CPU.h
 	$(CC) $(CFLAGS) -c CPU.c
 
-aging_p.o: schedule_aging_p.c
-	$(CC) $(CFLAGS) -c schedule_aging_p.c
+aging_p.o: schedule_aging_p.c timer.o
+	$(CC) $(CFLAGS) -c schedule_aging_p.c timer.o
 
-rr: Driver.o list.o CPU.o timer.o schedule_rr.o
-	$(CC) $(CFLAGS) -o rr Driver.o timer.o schedule_rr.o list.o CPU.o
+rr: Driver.o list.o CPU.o schedule_rr.o
+	$(CC) $(CFLAGS) -o rr Driver.o schedule_rr.o list.o CPU.o
 
 timer.o: timer.c timer.h 
 	$(CC) $(CFLAGS) -c timer.c 
