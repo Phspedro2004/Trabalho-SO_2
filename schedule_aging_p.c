@@ -9,7 +9,7 @@
 #include "CPU.h"
 #include "timer.h"
 
-#define AGING_LIMIT 5
+#define AGING_LIMIT 2
 
 struct node *taskList[MIN_PRIORITY] = { NULL };
 

@@ -14,19 +14,20 @@
 
 struct node *taskList[MIN_PRIORITY] = { NULL };
 
-// Insere uma nova tarefa na fila de acordo com a prioridade
+// Insere uma nova tarefa na fila dependendo da prioridade
 void add(char *name, int priority, int burst) {
     Task *task = malloc(sizeof(Task));
     task->name = strdup(name);
     task->priority = priority;
     task->burst = burst;
-    task->deadline = 0; // Ignorado no RR_P
-    task->wait_time = 0; // Ignorado neste escalonador
+
+    task->deadline = 0; 
+    task->wait_time = 0; 
 
     insert(&taskList[priority - 1], task);
 }
 
-// Executa o escalonamento com Round Robin por prioridade
+// Executa o escalonamento Round Robin com prioridade
 void schedule() {
     while (1) {
         int p;
@@ -36,7 +37,6 @@ void schedule() {
             }
         }
 
-        // Todas as filas estão vazias
         if (p > MIN_PRIORITY) {
             break;
         }

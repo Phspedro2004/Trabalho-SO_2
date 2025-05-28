@@ -11,7 +11,7 @@
 
 struct node *taskList = NULL;
 
-// Insere tarefa com deadline na fila EDF (ordenada por menor deadline)
+// Insere tarefa na fila EDF
 void add(char *name, int priority, int burst, int deadline) {
     Task *task = malloc(sizeof(Task));
     task->name = strdup(name);
@@ -20,22 +20,22 @@ void add(char *name, int priority, int burst, int deadline) {
     int current_time = timer_get_time();
     task->deadline = current_time + deadline;
     task->start_time = current_time;
+    
     task->wait_time = 0;
 
     insert_EDF(&taskList, task);
 }
 
-// Executa o escalonamento com política EDF
+// Executa o escalonamento EDF
 void schedule() {
     timer_start();
 
     while (taskList != NULL) {
         Task *t = taskList->task;
 
-        // Se o tempo atual excede o deadline da tarefa, ela é descartada
+        
         if (timer_get_time() > t->deadline) {
-            printf("[EDF] Tarefa [%s] perdeu o prazo (%d < %d). Ignorada.\n",
-                   t->name, t->deadline, timer_get_time());
+            printf("[EDF] Tarefa [%s] perdeu o prazo (%d < %d). Ignorada.\n", t->name, t->deadline, timer_get_time());
             delete(&taskList);
             free(t->name);
             free(t);

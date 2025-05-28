@@ -11,19 +11,19 @@
 
 struct node *taskList = NULL;
 
-// Insere uma nova tarefa na fila de acordo com a prioridade
+// Insere uma nova tarefa na fila
 void add(char *name, int priority, int burst) {
     Task *task = malloc(sizeof(Task));
     task->name = strdup(name);
-    task->priority = priority;
     task->burst = burst;
-    task->deadline = 0; // Ignorado no RR_P
-    task->wait_time = 0; // Ignorado neste escalonador
+    task->priority = 0;
+    task->deadline = 0;
+    task->wait_time = 0;
 
     insert(&taskList, task);
 }
 
-// Executa o escalonamento Round Robin
+// Executa o Round Robin
 void schedule() {
     while (taskList != NULL) {
         Task *current = taskList->task;
@@ -38,10 +38,10 @@ void schedule() {
         run(current, fatia);
         current->burst -= fatia;
 
-        delete(&taskList); // Remove a tarefa atual da fila
+        delete(&taskList); 
 
         if (current->burst > 0) {
-            insert(&taskList, current); // Reinsere a tarefa se ainda há tempo de CPU
+            insert(&taskList, current); 
         } else {
             free(current->name);
             free(current);

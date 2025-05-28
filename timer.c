@@ -24,9 +24,6 @@ void *temporizador_thread() {
             flag_tempo = true;
         }
         pthread_mutex_unlock(&lock_timer);
-
-        // DEBUG opcional:
-        // printf("[timer] tempo=%d flag=%d\n", tempo_atual, flag_tempo);
     }
     return NULL;
 }
