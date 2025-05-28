@@ -28,7 +28,7 @@ void *temporizador_thread() {
     return NULL;
 }
 
-// Inicia o temporizador (chamado uma única vez no início)
+// Inicia o temporizador 
 void timer_start() {
     pthread_t tid;
     if (pthread_create(&tid, NULL, temporizador_thread, NULL) != 0) {
